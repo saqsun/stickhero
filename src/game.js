@@ -55,17 +55,17 @@ class playGame extends Phaser.Scene {
         this.input.on("pointerup", this.stop, this);
         this.score = 0
 
-        
+
     }
-  addBackground() {
-    this.sunSprite = this.add.sprite(520, 720, "sun");
-    this.add.tileSprite(0, 450, 845, 361, "cloud_03").setOrigin(0);
-    this.add.sprite(0, 650, "cloud_02").setOrigin(0);
-    this.add.sprite(0, 750, "cloud_01").setOrigin(0);
-    const oceanTile = this.add.sprite(0, 1134, "ocean_tile").setOrigin(0, 1);
-    oceanTile.setScale(750 / oceanTile.width, 1);
-    // this.add.sprite(520, 230, "cloud_02");
-  }
+    addBackground() {
+        this.sunSprite = this.add.sprite(520, 720, "sun");
+        this.add.tileSprite(0, 450, 845, 361, "cloud_03").setOrigin(0);
+        this.add.sprite(0, 650, "cloud_02").setOrigin(0);
+        this.add.sprite(0, 750, "cloud_01").setOrigin(0);
+        const oceanTile = this.add.sprite(0, 1134, "ocean_tile").setOrigin(0, 1);
+        oceanTile.setScale(750 / oceanTile.width, 1);
+        // this.add.sprite(520, 230, "cloud_02");
+    }
 
     addPlatforms() {
         this.mainPlatform = 0;
@@ -79,13 +79,12 @@ class playGame extends Phaser.Scene {
         let platform = this.add.sprite(
             posX,
             game.config.height - gameOptions.platformHeight,
-            "this.sunSprite = this.add.sprite(520, 720, "sun");"
+            "pilar"
         );
         platform.displayWidth =
             (gameOptions.platformWidthRange[0] + gameOptions.platformWidthRange[1]) /
             2;
-        platform.displayHeight = gameOptions.platformHeight;
-        platform.alpha = 0.7;
+        platform.displayHeight = gameOptions.platformHeight;        
         platform.setOrigin(0, 0);
         return platform;
     }
