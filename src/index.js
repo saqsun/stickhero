@@ -1,0 +1,2 @@
+import "phaser";
+import "./game";
