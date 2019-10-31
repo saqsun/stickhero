@@ -40,6 +40,7 @@ class playGame extends Phaser.Scene {
         this.load.image("cloud_03", "cloud_03.png");
         this.load.image("ocean_tile", "ocean_tile.png");
         this.load.image("sun", "sun.png");
+        this.load.image("pilar", "pilar.png");
         this.load.image("bridge_tile", "bridge_tile.png");
         this.load.image("preview", "preview.jpeg");
     }
@@ -52,26 +53,19 @@ class playGame extends Phaser.Scene {
         this.addPole();
         this.input.on("pointerdown", this.grow, this);
         this.input.on("pointerup", this.stop, this);
-
         this.score = 0
-    }
 
-    addBackground() {
-        this.sunSprite = this.add.sprite(520, 720, "sun");
-        this.add.sprite(0, 450, "cloud_03").setOrigin(0);
-        this.add.sprite(0, 650, "cloud_02").setOrigin(0);
-        this.add.sprite(0, 750, "cloud_01").setOrigin(0);
-        const oceanTile = this.add.sprite(0, 1134, "ocean_tile").setOrigin(0, 1);
-        oceanTile.setScale(750 / oceanTile.width, 1);
-        // this.add.sprite(520, 230, "cloud_02");
+        
     }
-
-    addPreview() {
-        this.add
-            .sprite(0, 0, "preview")
-            .setOrigin(0)
-            .setAlpha(0.5);
-    }
+  addBackground() {
+    this.sunSprite = this.add.sprite(520, 720, "sun");
+    this.add.tileSprite(0, 450, 845, 361, "cloud_03").setOrigin(0);
+    this.add.sprite(0, 650, "cloud_02").setOrigin(0);
+    this.add.sprite(0, 750, "cloud_01").setOrigin(0);
+    const oceanTile = this.add.sprite(0, 1134, "ocean_tile").setOrigin(0, 1);
+    oceanTile.setScale(750 / oceanTile.width, 1);
+    // this.add.sprite(520, 230, "cloud_02");
+  }
 
     addPlatforms() {
         this.mainPlatform = 0;
@@ -85,7 +79,7 @@ class playGame extends Phaser.Scene {
         let platform = this.add.sprite(
             posX,
             game.config.height - gameOptions.platformHeight,
-            "tile"
+            "this.sunSprite = this.add.sprite(520, 720, "sun");"
         );
         platform.displayWidth =
             (gameOptions.platformWidthRange[0] + gameOptions.platformWidthRange[1]) /
