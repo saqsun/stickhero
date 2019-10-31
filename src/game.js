@@ -3,9 +3,9 @@ let gameOptions = {
     platformGapRange: [200, 400],
     platformWidthRange: [100, 100],
     platformHeight: 600,
-    playerWidth: 32,
-    playerHeight: 64,
-    poleWidth: 53,
+    playerWidth: 64*1.5,
+    playerHeight: 64*1.5,
+    poleWidth: 53/2,
     growTime: 500,
     rotateTime: 500,
     walkTime: 500,
@@ -33,7 +33,13 @@ class playGame extends Phaser.Scene {
         super("PlayGame");
     }
     preload() {
+        this.load.image("face_box_v2", "face_box_v2.png");
         this.load.image("tile", "tile.png");
+        this.load.image("car", "car.png");
+        this.load.image("fullface_j", "fullface_j.png");
+        this.load.image("face_j", "face_j.png");
+        this.load.image("face_m", "face_m.png");
+        this.load.image("face_r", "face_r.png");
         this.load.image("tileWhite", "tileWhite.png");
         this.load.image("cloud_01", "cloud_01.png");
         this.load.image("cloud_02", "cloud_02.png");
@@ -46,14 +52,23 @@ class playGame extends Phaser.Scene {
     }
 
     create() {
+
+        
+        this.faceGroup = this.add.container();
+        
+
         // this.addPreview();
         this.addBackground();
         this.addPlatforms();
         this.addPlayer();
         this.addPole();
+
         this.input.on("pointerdown", this.grow, this);
         this.input.on("pointerup", this.stop, this);
         this.score = 0
+
+        this.topPilarGroup = this.add.container();
+        this.bridgeGroup = this.add.container();
 
 
     }
@@ -86,6 +101,33 @@ class playGame extends Phaser.Scene {
             2;
         platform.displayHeight = gameOptions.platformHeight;        
         platform.setOrigin(0, 0);
+
+
+        let face = this.add.sprite(
+            posX-this.faceGroup.x,
+            game.config.height - gameOptions.platformHeight+180,
+            "face_box_v2"
+        );       
+        face.displayWidth= 100
+        face.displayHeight= 100
+        face.setOrigin(0, 0);
+
+        this.faceGroup.add(face)
+
+        let face2 = this.add.sprite(
+            posX-this.faceGroup.x,
+            game.config.height - gameOptions.platformHeight+180,
+            "fullface_j"
+        );       
+        face2.displayWidth= 100
+        face2.displayHeight= 100
+        face2.setOrigin(0, 0);
+
+        this.faceGroup.add(face2)
+
+        this.faceGroup.setDepth(1000)
+
+
         return platform;
     }
     tweenPlatform() {
@@ -114,18 +156,18 @@ class playGame extends Phaser.Scene {
         this.player = this.add.sprite(
             this.platforms[this.mainPlatform].displayWidth - gameOptions.poleWidth,
             game.config.height - gameOptions.platformHeight,
-            "tile"
+            "car"
         );
         this.player.displayWidth = gameOptions.playerWidth;
         this.player.displayHeight = gameOptions.playerHeight;
         this.player.setOrigin(1, 1);
 
-        this.bridgeGroup = this.add.container();
+        
     }
     addPole() {
         this.pole = this.add.tileSprite(
-            this.platforms[this.mainPlatform].displayWidth,
-            game.config.height - gameOptions.platformHeight,
+            this.platforms[this.mainPlatform].displayWidth-15,
+            game.config.height - gameOptions.platformHeight+15,
             gameOptions.poleWidth,
             gameOptions.playerHeight / 4,
             "bridge_tile"
@@ -201,7 +243,9 @@ class playGame extends Phaser.Scene {
                                             this.pole,
                                             this.platforms[1 - this.mainPlatform],
                                             this.platforms[this.mainPlatform],
-                                            this.bridgeGroup
+                                            this.bridgeGroup,
+                                            this.faceGroup, 
+                                            this.topPilarGroup
                                         ],
                                         props: {
                                             x: {
