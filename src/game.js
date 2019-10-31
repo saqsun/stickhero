@@ -5,7 +5,7 @@ let gameOptions = {
   platformHeight: 600,
   playerWidth: 32,
   playerHeight: 64,
-  poleWidth: 8,
+  poleWidth: 53,
   growTime: 500,
   rotateTime: 500,
   walkTime: 500,
@@ -19,9 +19,9 @@ window.onload = function() {
   let gameConfig = {
     type: Phaser.AUTO,
     width: 750,
-    height: 1334,
+    height: 1134,
     scene: [playGame],
-    backgroundColor: 0x0c88c7
+    transparent: true
   };
   game = new Phaser.Game(gameConfig);
   window.focus();
@@ -34,14 +34,42 @@ class playGame extends Phaser.Scene {
   }
   preload() {
     this.load.image("tile", "tile.png");
+    this.load.image("cloud_01", "cloud_01.png");
+    this.load.image("cloud_02", "cloud_02.png");
+    this.load.image("cloud_03", "cloud_03.png");
+    this.load.image("ocean_tile", "ocean_tile.png");
+    this.load.image("sun", "sun.png");
+    this.load.image("bridge_tile", "bridge_tile.png");
+    this.load.image("preview", "preview.jpeg");
   }
+
   create() {
+    // this.addPreview();
+    this.addBackground();
     this.addPlatforms();
     this.addPlayer();
     this.addPole();
     this.input.on("pointerdown", this.grow, this);
     this.input.on("pointerup", this.stop, this);
   }
+
+  addBackground() {
+    this.add.sprite(520, 230, "sun");
+    this.add.sprite(0, 450, "cloud_03").setOrigin(0);
+    this.add.sprite(0, 650, "cloud_02").setOrigin(0);
+    this.add.sprite(0, 750, "cloud_01").setOrigin(0);
+    const oceanTile = this.add.sprite(0, 1134, "ocean_tile").setOrigin(0, 1);
+    oceanTile.setScale(750 / oceanTile.width, 1);
+    // this.add.sprite(520, 230, "cloud_02");
+  }
+
+  addPreview() {
+    this.add
+      .sprite(0, 0, "preview")
+      .setOrigin(0)
+      .setAlpha(0.5);
+  }
+
   addPlatforms() {
     this.mainPlatform = 0;
     this.platforms = [];
@@ -49,6 +77,7 @@ class playGame extends Phaser.Scene {
     this.platforms.push(this.addPlatform(game.config.width));
     this.tweenPlatform();
   }
+
   addPlatform(posX) {
     let platform = this.add.sprite(
       posX,
@@ -96,21 +125,23 @@ class playGame extends Phaser.Scene {
     this.player.setOrigin(1, 1);
   }
   addPole() {
-    this.pole = this.add.sprite(
+    this.pole = this.add.tileSprite(
       this.platforms[this.mainPlatform].displayWidth,
       game.config.height - gameOptions.platformHeight,
-      "tile"
+      gameOptions.poleWidth,
+      gameOptions.playerHeight / 4,
+      "bridge_tile"
     );
     this.pole.setOrigin(1, 1);
-    this.pole.displayWidth = gameOptions.poleWidth;
-    this.pole.displayHeight = gameOptions.playerHeight / 4;
+    // this.pole.displayWidth = gameOptions.poleWidth;
+    // this.pole.displayHeight = gameOptions.playerHeight / 4;
   }
   grow() {
     if (this.gameMode == WAITING) {
       this.gameMode = GROWING;
       this.growTween = this.tweens.add({
         targets: [this.pole],
-        displayHeight:
+        height:
           gameOptions.platformGapRange[1] + gameOptions.platformWidthRange[1],
         duration: gameOptions.growTime
       });
@@ -238,7 +269,7 @@ class playGame extends Phaser.Scene {
     this.tweenPlatform();
     this.pole.angle = 0;
     this.pole.x = this.platforms[this.mainPlatform].displayWidth;
-    this.pole.displayHeight = gameOptions.poleWidth;
+    this.pole.height = gameOptions.poleWidth;
   }
 }
 function resize() {
